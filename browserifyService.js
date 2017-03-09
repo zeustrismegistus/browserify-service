@@ -22,7 +22,7 @@ function browserifyService ()
 	this.require = function(/*expects array*/ modules)
 	{
 		var nowSecs = new Date().getTime();
-		var tempFolder = path.join(__tempFolderRoot, nowSecs);
+		var tempFolder = path.join(__tempFolderRoot, nowSecs.toString());
 		var builder = moduleBuilder(tempFolder);
 	
 		try
@@ -33,12 +33,12 @@ function browserifyService ()
 			builder.setName("temp" + nowSecs);
 
 			//create a main program that requires all the modules
-			string mainjs = "";
+			var mainjs = "";
 			
 			modules.forEach((x,i,a)=>
 			{ 
 				builder.hasDependency(x); 
-				mainjs += 'var ' + x + ' = require(' + x + ');\r\n';
+				mainjs += 'var ' + x + ' = require("' + x + '");\r\n';
 			});
 			builder.hasDependency('browserify');
 			builder.npmUpdate(); //grab the modules
@@ -49,6 +49,7 @@ function browserifyService ()
 			//read bundle.js
 			var rv = fs.readFileSync(path.resolve(tempFolder,'bundle.js'));
 			
+			console.log(rv);
 			return rv;
 		}
 		catch(e)
@@ -68,6 +69,6 @@ function browserifyService ()
 	Object.freeze(browserifyService);
 })();
 
-
-module.exports = browserifyService;
+var service = new browserifyService();
+module.exports = service;
 
