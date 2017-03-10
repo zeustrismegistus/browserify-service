@@ -2,7 +2,7 @@
 
 	sample usage:
 	
-		var service = require("d__browserify-service");
+		var service = require("d__browserify-service")(/*optional*/ tempPath);
 		var jsCode = service.require(['moduleA', 'moduleB', 'moduleC']);
 		
 	

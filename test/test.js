@@ -11,7 +11,7 @@ const expect = Code.expect;
 const fs = require('fs-extra');
 const path = require('path');
 
-var service = require('./../browserifyService.js');
+var service = require('./../browserifyService.js')();
 
 describe('using browserifyService to broker js', () => {
 

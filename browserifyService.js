@@ -7,16 +7,17 @@ const shell = require('shelljs');
 /*
 	sample usage:
 	
-		var service = require("d__browserify-service");
+		var service = require("d__browserify-service")('./temp');
 		
 		var jsCode = service.require(['moduleA', 'moduleB', 'moduleC');
 */
 
-function browserifyService ()
+
+function browserifyService (tempPath)
 {
 	//privates
 	var __self = this;
-	var __tempFolderRoot = './temp';
+	var __tempFolderRoot = tempPath || './temp';
 	
 	//behaviour
 	this.require = function(/*expects array*/ modules)
@@ -47,7 +48,7 @@ function browserifyService ()
 			builder.shell('browserify main.js -o bundle.js');
 			
 			//read bundle.js
-			var rv = fs.readFileSync(path.resolve(tempFolder,'bundle.js'));
+			var rv = fs.readFileSync(path.resolve(tempFolder,'bundle.js'), "utf-8");
 			
 			console.log(rv);
 			return rv;
@@ -69,6 +70,8 @@ function browserifyService ()
 	Object.freeze(browserifyService);
 })();
 
-var service = new browserifyService();
-module.exports = service;
+
+module.exports = function(tempPath){
+	return new browserifyService(tempPath);
+};
 
